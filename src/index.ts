@@ -34,13 +34,39 @@ app.post("/todos", async (req, res) => {
   res.status(201).json({ success: true });
 });
 
+app.put("/todos/:id", async (req, res) => {
+  const { id } = req.params;
+  const { inputValue } = req.body;
+
+  await pool.query(
+    "UPDATE todos SET input_value = ? WHERE id = ?",
+    [inputValue, id]
+  );
+
+  res.json({ success: true });
+});
+
 app.put("/todos/:id/check", async (req, res) => {
+  console.log("CHECK API REGISTERED");
+
   const { id } = req.params;
   const { checked } = req.body;
 
   await pool.query(
     "UPDATE todos SET checked = ? WHERE id = ?",
     [checked, id]
+  );
+
+  res.json({ success: true });
+});
+
+
+app.delete("/todos/:id", async (req, res) => {
+  const { id } = req.params;
+
+  await pool.query(
+    "DELETE FROM todos WHERE id = ?",
+    [id]
   );
 
   res.json({ success: true });
